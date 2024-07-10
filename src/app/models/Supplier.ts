@@ -6,8 +6,8 @@ export interface Supplier {
     phoneNumber: string;
     email: string;
     website: string;
-    psysicalAddress: string;
+    physicalAddress: string;
     country: string;
     annualBilling: number;
-    lasEdited: string;
+    lastEdited: string;
 }

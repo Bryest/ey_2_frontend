@@ -2,11 +2,20 @@ import { ChangeDetectionStrategy, Component, inject, model, OnInit, signal } fro
 import { SupplierService } from '../../supplier.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { Supplier } from '../../models/Supplier';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+
+import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DialogAdd } from './dialog-add/dialog-add';
+import { DialogDetail } from './dialog-detail/dialog-detail';
+import { DialogDelete } from './dialog-delete/dialog-delete';
+import { DialogScreening } from './dialog-screening/dialog-screening';
+import { DialogEdit } from './dialog-edit/dialog-edit';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,8 +35,9 @@ import { MatListModule } from '@angular/material/list';
 })
 
 export class DashboardComponent implements OnInit {
-  readonly dialogRef = inject(MatDialog);
+  readonly supplier = model('')
 
+  readonly dialog = inject(MatDialog);
 
   suppliers: Supplier[] = [];
   token: string | null = '';
@@ -56,35 +66,38 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  openDetailDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialogRef.open(DialogDetail, {
-      width: '250px',
+  openDetailDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(DialogDetail, {
+      width: '350px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: supplier
     });
   }
 
   openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialogRef.open(DialogAdd, {
-      width: '250px',
+    this.dialog.open(DialogAdd, {
+      width: '400px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
   }
 
-  openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialogRef.open(DialogEdit, {
+  openEditDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(DialogEdit, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: supplier
     });
   }
 
-  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialogRef.open(DialogDelete, {
+  openDeleteDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(DialogDelete, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: supplier
     });
   }
 
@@ -98,7 +111,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openScreeningDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialogRef.open(DialogScreening, {
+    this.dialog.open(DialogScreening, {
       width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
@@ -108,101 +121,4 @@ export class DashboardComponent implements OnInit {
   formatTimestamp(timestamp: string): string {
     return this.datePipe.transform(timestamp, 'MMM d, y, h:mm:ss a') || '';
   }
-}
-
-
-@Component({
-  selector: 'dialog-delete',
-  templateUrl: 'dialog-delete.html',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogDelete {
-  readonly dialogRef = inject(MatDialogRef<DialogDelete>);
-}
-
-@Component({
-  selector: 'dialog-edit',
-  templateUrl: 'dialog-edit.html',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogEdit {
-  readonly dialogRef = inject(MatDialogRef<DialogEdit>);
-}
-
-@Component({
-  selector: 'dialog-add',
-  templateUrl: 'dialog-add.html',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogAdd {
-  readonly data = inject<Supplier>(MAT_DIALOG_DATA);
-  readonly dialogRef = inject(MatDialogRef<DialogAdd>);
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  onYesClick(): void {
-    this.dialogRef.close(this.data.id);
-  }
-}
-
-@Component({
-  selector: 'dialog-screening',
-  templateUrl: 'dialog-screening.html',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent,
-    MatListModule
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogScreening {
-  readonly dialogRef = inject(MatDialogRef<DialogScreening>);
-}
-
-@Component({
-  selector: 'dialog-detail',
-  templateUrl: 'dialog-detail.html',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent,
-    MatListModule
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogDetail {
-  readonly dialogRef = inject(MatDialogRef<DialogDetail>);
 }
