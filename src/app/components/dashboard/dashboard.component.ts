@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Supplier, SupplierService } from '../../supplier.service';
+import { SupplierService } from '../../supplier.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { Supplier } from '../../models/Supplier';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule, MatTableModule, CommonModule],
+  imports: [
+    MatCardModule,
+    MatTableModule,
+    CommonModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

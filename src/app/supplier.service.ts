@@ -1,26 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { UserLogin } from './models/UserLogin';
+import { Supplier } from './models/Supplier';
 
-
-export interface Supplier {
-  id: string;
-  businessName: string;
-  tradeName: string;
-  taxId: string;
-  phoneNumber: string;
-  email: string;
-  website: string;
-  psysicalAddress: string;
-  country: string;
-  annualBilling: number;
-  lasEdited: string;
-}
-
-export interface UserLogin {
-  username: string;
-  password: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +13,11 @@ export class SupplierService {
 
   constructor(private http: HttpClient) { }
 
-  login(user: UserLogin): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/Auth/login`, user);
+  login(username: string, password: string): Observable<string> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { username, password };
+
+    return this.http.post(`${this.apiUrl}/Auth/login`, body, { headers, responseType: 'text' });
   }
 
   getAllSupplier(token: string): Observable<Supplier[]> {

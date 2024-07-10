@@ -3,15 +3,6 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
 
 export const appConfig = {
   providers: [
@@ -19,14 +10,6 @@ export const appConfig = {
     provideHttpClient(),
     importProvidersFrom(
       BrowserAnimationsModule,
-      MatDialogModule,
-      MatTableModule,
-      MatButtonModule,
-      MatFormFieldModule,
-      MatInputModule,
-      MatSelectModule,
-      ReactiveFormsModule,
-      CommonModule
     )
   ]
 };
