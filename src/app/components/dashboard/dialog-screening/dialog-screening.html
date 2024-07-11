@@ -5,13 +5,10 @@
 <mat-dialog-actions>
     <mat-list role="list">
         <mat-list-item role="listitem">
-            <button mat-flat-button mat-dialog-close color="primary">Offshore Leaks Database</button>
+            <button mat-flat-button mat-dialog-close color="primary"
+                (click)="openScreeningTableDialog('0ms','0ms')">Offshore Leaks
+                Database</button>
         </mat-list-item>
-        <mat-list-item role="listitem">
-            <button mat-flat-button mat-dialog-close color="primary">The World Bank</button>
-        </mat-list-item>
-        <mat-list-item role="listitem">
-            <button mat-flat-button mat-dialog-close cdkFocusInitial color="primary">OFAC</button>
-        </mat-list-item>
+
     </mat-list>
 </mat-dialog-actions>

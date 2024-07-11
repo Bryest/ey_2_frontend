@@ -145,11 +145,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  openScreeningDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openScreeningDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(DialogScreening, {
       width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: supplier
     });
   }
 

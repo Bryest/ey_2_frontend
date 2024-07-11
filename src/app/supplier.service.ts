@@ -46,9 +46,9 @@ export class SupplierService {
     return this.http.delete(`${this.apiUrl}/Supplier/${id}`, { headers });
   }
 
-  screeningSupplier(id: string, token: string, sources: string[]): Observable<any> {
+  screeningSupplier(entity_name: string, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${this.apiUrl}/Supplier/${id}/screening`, { headers });
+    return this.http.get(`${this.apiUrl}/Supplier/screening/offshoreleaks/${entity_name}`, { headers });
   }
 }
 
