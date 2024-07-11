@@ -11,6 +11,7 @@ import { MatInputModule } from "@angular/material/input";
 @Component({
     selector: 'dialog-edit',
     templateUrl: 'dialog-edit.html',
+    styleUrl: 'dialog-edit.css',
     standalone: true,
     imports: [
         MatButtonModule,
@@ -55,6 +56,7 @@ export class DialogEdit implements OnInit {
     }
 
     onYesClick(): void {
-        this.dialogRef.close(this.data.id);
+        const supplierData = { ...this.data, ...this.supplierForm.value };
+        this.dialogRef.close(supplierData);
     }
 }

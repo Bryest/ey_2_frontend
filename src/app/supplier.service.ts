@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { UserLogin } from './models/UserLogin';
 import { Supplier } from './models/Supplier';
+import { Guid } from 'guid-typescript';
 
 
 @Injectable({
@@ -35,12 +36,12 @@ export class SupplierService {
     return this.http.post(`${this.apiUrl}/Supplier`, supplier, { headers });
   }
 
-  updateSupplier(id: string, supplier: Supplier, token: string): Observable<any> {
+  updateSupplier(id: Guid, supplier: Supplier, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.put(`${this.apiUrl}/Supplier/${id}`, supplier, { headers });
   }
 
-  deleteSupplier(id: string, token: string): Observable<any> {
+  deleteSupplier(id: Guid, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete(`${this.apiUrl}/Supplier/${id}`, { headers });
   }

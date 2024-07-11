@@ -102,6 +102,7 @@
 
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
-    <button mat-stroked-button mat-dialog-close color="primary">Close</button>
-    <button mat-stroked-button mat-dialog-close color="warn">Add</button>
+    <button mat-stroked-button mat-dialog-close color="primary" (click)="onNoClick()">Close</button>
+    <button mat-stroked-button mat-dialog-close color="warn" [disabled]="!supplierForm.valid"
+        (click)="onYesClick()">Add</button>
 </mat-dialog-actions>

@@ -31,6 +31,9 @@ import { SupplierValidator } from "../FormValidator/FormValidator";
 export class DialogAdd implements OnInit {
     supplierForm = inject(SupplierValidator).supplierForm;
 
+    readonly data = inject<Supplier>(MAT_DIALOG_DATA);
+    readonly dialogRef = inject(MatDialogRef<DialogAdd>);
+
     ngOnInit(): void {
         this.supplierForm.patchValue({
             businessName: '',
@@ -46,15 +49,11 @@ export class DialogAdd implements OnInit {
 
     }
 
-
-    readonly data = inject<Supplier>(MAT_DIALOG_DATA);
-    readonly dialogRef = inject(MatDialogRef<DialogAdd>);
-
     onNoClick(): void {
         this.dialogRef.close();
     }
 
     onYesClick(): void {
-        this.dialogRef.close(this.data.id);
+        this.dialogRef.close(this.supplierForm.value);
     }
 }

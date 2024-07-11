@@ -1,21 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, model, OnInit, signal } from '@angular/core';
+import { Component, inject, model, OnInit } from '@angular/core';
 import { SupplierService } from '../../supplier.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { CommonModule, DatePipe, NgIf } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Supplier } from '../../models/Supplier';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
-import { MatListModule } from '@angular/material/list';
-import { MatInputModule } from '@angular/material/input';
-
-import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAdd } from './dialog-add/dialog-add';
 import { DialogDetail } from './dialog-detail/dialog-detail';
 import { DialogDelete } from './dialog-delete/dialog-delete';
 import { DialogScreening } from './dialog-screening/dialog-screening';
 import { DialogEdit } from './dialog-edit/dialog-edit';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-dashboard',
@@ -76,34 +72,73 @@ export class DashboardComponent implements OnInit {
   }
 
   openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DialogAdd, {
+    const dialogRef = this.dialog.open(DialogAdd, {
       width: '400px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addSupplier(result);
+      }
+    });
   }
 
+  addSupplier(supplierData: Supplier): void {
+    if (this.token) {
+      this.supplierService.createSupplier(supplierData, this.token).subscribe(
+        newSupplier => this.suppliers.push(newSupplier),
+        error => console.error(error)
+      );
+    }
+  }
+
+
   openEditDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DialogEdit, {
-      width: '250px',
+    const dialogRef = this.dialog.open(DialogEdit, {
+      width: '400px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: supplier
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.editSupplier(result);
+      }
+    })
+  }
+
+  editSupplier(supplierData: Supplier): void {
+    if (this.token) {
+      const supplierGuid = Guid.parse(supplierData.id);
+      this.supplierService.updateSupplier(supplierGuid, supplierData, this.token).subscribe(
+        updatedSupplier => this.suppliers.push(updatedSupplier),
+        error => console.error(error)
+      );
+    }
   }
 
   openDeleteDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DialogDelete, {
+    const dialogRef = this.dialog.open(DialogDelete, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: supplier
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteSupplier(result);
+      }
+    })
   }
 
   deleteSupplier(id: string): void {
     if (this.token) {
-      this.supplierService.deleteSupplier(id, this.token).subscribe(
+      const supplierGuid = Guid.parse(id);
+      this.supplierService.deleteSupplier(supplierGuid, this.token).subscribe(
         () => this.suppliers = this.suppliers.filter(supplier => supplier.id !== id),
         error => console.error(error)
       );
