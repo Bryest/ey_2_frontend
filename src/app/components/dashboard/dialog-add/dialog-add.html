@@ -2,7 +2,7 @@
 <mat-dialog-content class="dialog-content">
 
     <form class="example-form" [formGroup]="supplierForm">
-        <mat-form-field>
+        <mat-form-field class="full-width">
             <mat-label>Business Name</mat-label>
             <input matInput formControlName="businessName">
             <mat-error *ngIf="supplierForm.get('businessName')?.hasError('required')">
@@ -13,7 +13,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="full-width">
             <mat-label>Trade Name</mat-label>
             <input matInput formControlName="tradeName">
             <mat-error *ngIf="supplierForm.get('tradeName')?.hasError('required')">
@@ -24,7 +24,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="full-width">
             <mat-label>Tax ID</mat-label>
             <input matInput formControlName="taxId">
             <mat-error *ngIf="supplierForm.get('taxId')?.hasError('required')">
@@ -79,7 +79,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="full-width">
             <mat-label>Country</mat-label>
             <input matInput formControlName="country">
             <mat-error *ngIf="supplierForm.get('country')?.hasError('required')">
@@ -87,7 +87,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="full-width">
             <mat-label>Annual Billing</mat-label>
             <input matInput formControlName="annualBilling">
             <mat-error *ngIf="supplierForm.get('annualBilling')?.hasError('required')">

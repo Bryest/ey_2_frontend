@@ -1,7 +1,7 @@
-import { Component, inject, model, OnInit } from '@angular/core';
-import { SupplierService } from '../../supplier.service';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { SupplierService } from '../../service/supplier.service';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Supplier } from '../../models/Supplier';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,7 @@ import { DialogDelete } from './dialog-delete/dialog-delete';
 import { DialogScreening } from './dialog-screening/dialog-screening';
 import { DialogEdit } from './dialog-edit/dialog-edit';
 import { Guid } from 'guid-typescript';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,19 +23,15 @@ import { Guid } from 'guid-typescript';
     CommonModule,
     MatButtonModule,
     MatDialogModule,
+    MatPaginatorModule,
   ],
   providers: [
     DatePipe
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css']
 })
-
 export class DashboardComponent implements OnInit {
-  readonly supplier = model('')
-
-  readonly dialog = inject(MatDialog);
-
   suppliers: Supplier[] = [];
   token: string | null = '';
   displayedColumns: string[] = [
@@ -48,7 +45,13 @@ export class DashboardComponent implements OnInit {
     'country',
     'annualBilling',
     'lastEdited',
-    'actions'];
+    'actions'
+  ];
+  dataSource = new MatTableDataSource<Supplier>(this.suppliers);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  readonly dialog = inject(MatDialog);
 
   constructor(private supplierService: SupplierService, private datePipe: DatePipe) { }
 
@@ -56,7 +59,11 @@ export class DashboardComponent implements OnInit {
     this.token = localStorage.getItem('token');
     if (this.token) {
       this.supplierService.getAllSupplier(this.token).subscribe(
-        data => this.suppliers = data,
+        data => {
+          this.suppliers = data;
+          this.dataSource.data = this.suppliers;
+          this.dataSource.paginator = this.paginator;
+        },
         error => console.error(error)
       );
     }
@@ -88,12 +95,15 @@ export class DashboardComponent implements OnInit {
   addSupplier(supplierData: Supplier): void {
     if (this.token) {
       this.supplierService.createSupplier(supplierData, this.token).subscribe(
-        newSupplier => this.suppliers.push(newSupplier),
+        newSupplier => {
+          this.suppliers.push(newSupplier);
+          this.dataSource.data = this.suppliers;
+          location.reload();
+        },
         error => console.error(error)
       );
     }
   }
-
 
   openEditDialog(supplier: Supplier, enterAnimationDuration: string, exitAnimationDuration: string): void {
     const dialogRef = this.dialog.open(DialogEdit, {
@@ -107,14 +117,19 @@ export class DashboardComponent implements OnInit {
       if (result) {
         this.editSupplier(result);
       }
-    })
+    });
   }
 
   editSupplier(supplierData: Supplier): void {
     if (this.token) {
       const supplierGuid = Guid.parse(supplierData.id);
       this.supplierService.updateSupplier(supplierGuid, supplierData, this.token).subscribe(
-        updatedSupplier => this.suppliers.push(updatedSupplier),
+        updatedSupplier => {
+          const index = this.suppliers.findIndex(supplier => supplier.id === supplierData.id);
+          this.suppliers[index] = updatedSupplier;
+          this.dataSource.data = this.suppliers;
+          location.reload();
+        },
         error => console.error(error)
       );
     }
@@ -132,14 +147,18 @@ export class DashboardComponent implements OnInit {
       if (result) {
         this.deleteSupplier(result);
       }
-    })
+    });
   }
 
   deleteSupplier(id: string): void {
     if (this.token) {
       const supplierGuid = Guid.parse(id);
       this.supplierService.deleteSupplier(supplierGuid, this.token).subscribe(
-        () => this.suppliers = this.suppliers.filter(supplier => supplier.id !== id),
+        () => {
+          this.suppliers = this.suppliers.filter(supplier => supplier.id !== id);
+          this.dataSource.data = this.suppliers;
+          location.reload();
+        },
         error => console.error(error)
       );
     }

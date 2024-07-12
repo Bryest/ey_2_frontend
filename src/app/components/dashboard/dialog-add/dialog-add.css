@@ -26,3 +26,9 @@
 .full-width {
     width: 100%;
 }
+
+.mat-error {
+    white-space: normal;
+    display: block;
+    width: 100%;
+}

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, inject, 
 import { MatButtonModule } from "@angular/material/button";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
 import { MatListModule } from "@angular/material/list";
-import { SupplierService } from "../../../supplier.service";
+import { SupplierService } from "../../../service/supplier.service";
 import { MatTableModule } from "@angular/material/table";
 import { Entity } from "../../../models/Entity";
 import { map, Observable, tap } from "rxjs";

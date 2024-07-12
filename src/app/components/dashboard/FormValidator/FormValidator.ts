@@ -6,13 +6,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SupplierValidator {
     private _supplierForm = new FormGroup({
-        businessName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]),
-        tradeName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]),
+        businessName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9. ]*$')]),
+        tradeName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9. ]*$')]),
         taxId: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{11}$')]),
         phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]),
         email: new FormControl('', [Validators.required, Validators.email]),
         website: new FormControl('', [Validators.required, Validators.pattern('https?://.+')]),
-        physicalAddress: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]),
+        physicalAddress: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9 ,.]*$')]),
         country: new FormControl('', [Validators.required]),
         annualBilling: new FormControl('', [Validators.required, Validators.pattern('^[0-9,]*$')]),
     });

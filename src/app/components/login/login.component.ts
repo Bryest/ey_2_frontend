@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SupplierService } from '../../supplier.service';
+import { SupplierService } from '../../service/supplier.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
