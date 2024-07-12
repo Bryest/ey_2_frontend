@@ -1,0 +1,9 @@
+mat-toolbar {
+    max-width: 100%;
+}
+
+.toolbar-image {
+    height: 40px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
