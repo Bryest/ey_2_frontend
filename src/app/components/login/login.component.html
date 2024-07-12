@@ -7,7 +7,10 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Password</mat-label>
-            <input matInput [(ngModel)]="password" type="password">
+            <input matInput [type]="passwordType" [(ngModel)]="password">
+            <button matSuffix type="button" mat-icon-button (click)="togglePassword()">
+                <mat-icon>{{passwordShown ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </button>
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="login()">Login</button>
     </mat-card-content>

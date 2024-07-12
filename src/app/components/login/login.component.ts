@@ -7,9 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserLogin } from '../../models/UserLogin';
-
-
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -20,7 +19,8 @@ import { UserLogin } from '../../models/UserLogin';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatIconModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -28,6 +28,8 @@ import { UserLogin } from '../../models/UserLogin';
 export class LoginComponent {
   username = '';
   password = '';
+  passwordShown: boolean = false;
+  passwordType: string = 'password';
 
   constructor(private authService: SupplierService, private router: Router) { }
 
@@ -37,10 +39,17 @@ export class LoginComponent {
         localStorage.setItem('token', response);
         this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
-        console.log(err);
-        alert('User or password incorrect');
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 0) {
+          return alert('Unable to connect to the server. Please check your internet connection or try again later.');
+        }
+        return alert('User or password incorrect');
       }
     });
+  }
+
+  togglePassword(): void {
+    this.passwordShown = !this.passwordShown;
+    this.passwordType = this.passwordShown ? 'text' : 'password';
   }
 }
